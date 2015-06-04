@@ -12,12 +12,21 @@ else
     FORCE_MISSING=
 fi
 
-libtoolize --copy $FORCE 2>&1 | sed '/^You should/d' || {
-    echo "libtoolize failed!"
-    exit 1
-}
+if [[ "$OSTYPE" == "darwin"* ]]; then
+    glibtoolize --copy $FORCE 2>&1 | sed '/^You should/d' || {
+        echo "libtoolize failed!"
+        exit 1
+    }
+else
+    libtoolize --copy $FORCE 2>&1 | sed '/^You should/d' || {
+        echo "libtoolize failed!"
+        exit 1
+    }
+fi
 
-aclocal $FORCE || {
+
+# Note: Supress warnings to 
+aclocal $FORCE  || {
     echo "aclocal failed!"
     exit 1
 }
